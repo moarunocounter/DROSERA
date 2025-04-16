@@ -12,6 +12,17 @@ Jalankan perintah berikut di VPS Ubuntu 22.04+:
 curl -LO https://raw.githubusercontent.com/moarunocounter/DROSERA/main/drosera.sh && chmod +x drosera.sh && ./drosera.sh
 
 ```
+## 🔍 Verifikasi & Test
+
+### Dry Run Trap
+```bash
+drosera dryrun
+```
+
+### Deploy Trap
+```bash
+DROSERA_PRIVATE_KEY=0x... drosera apply
+```
 
 ---
 
@@ -38,22 +49,6 @@ my-drosera-trap/
 ├── foundry.toml
 └── install.sh
 ```
-
----
-
-## 🔍 Verifikasi & Test
-
-### Dry Run Trap
-```bash
-drosera dryrun
-```
-
-### Deploy Trap
-```bash
-DROSERA_PRIVATE_KEY=0x... drosera apply
-```
-
----
 
 ## 🧠 Konfigurasi drosera.toml
 
