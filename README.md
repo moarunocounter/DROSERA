@@ -9,7 +9,7 @@ Script ini akan membantu Anda mengatur node operator Drosera dari nol secara oto
 Jalankan perintah berikut di VPS Ubuntu 22.04+:
 
 ```bash
-curl -L https://github.com/moarunocounter/DROSERA/raw/main/install.sh | bash
+curl -L https://raw.githubusercontent.com/moarunocounter/DROSERA/main/drosera.sh | bash
 ```
 
 ---
