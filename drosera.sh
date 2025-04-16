@@ -4,11 +4,11 @@ echo "======================================================="
 echo "                DROSERA NETWORK by Moaru               "
 echo "======================================================="
 
-read -p "Masukkan email GitHub kamu : " GITHUB_EMAIL
-read -p "Masukkan username GitHub kamu : " GITHUB_USERNAME
-read -p "Masukkan Private Key kamu (untuk trap & operator) : " ETH_KEY
-read -p "Masukkan IP VPS kamu (untuk operator) : " VPS_IP
-read -p "Masukkan Address kamu (contoh: 0xabc...123) : " WHITELIST_ADDR
+read -p "Masukkan email GitHub kamu: " GITHUB_EMAIL
+read -p "Masukkan username GitHub kamu: " GITHUB_USERNAME
+read -p "Masukkan Private Key kamu (untuk trap & operator): " ETH_KEY
+read -p "Masukkan IP VPS kamu (untuk operator): " VPS_IP
+read -p "Masukkan Address kamu (contoh: 0xabc...123): " WHITELIST_ADDR
 
 # Update sistem & install dependensi
 echo "🔧 Menyiapkan sistem dan menginstal dependensi..."
