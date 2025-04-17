@@ -12,6 +12,16 @@ Jalankan perintah berikut di VPS Ubuntu 22.04+:
 curl -LO https://raw.githubusercontent.com/moarunocounter/DROSERA/main/drosera.sh && chmod +x drosera.sh && ./drosera.sh
 
 ```
+## ⚙️ Kelola Node
+
+```bash
+sudo systemctl start drosera      # Menjalankan node
+sudo systemctl stop drosera       # Menghentikan node
+sudo systemctl restart drosera    # Restart node
+sudo systemctl status drosera     # Status node
+journalctl -u drosera -f          # Lihat log node real-time
+```
+
 ## 🔍 Verifikasi & Test
 
 ### Dry Run Trap
@@ -73,20 +83,6 @@ block_sample_size = 10
 private = true
 whitelist = ["your_address"]
 ```
-
----
-
-## ⚙️ Kelola Node
-
-```bash
-sudo systemctl start drosera      # Menjalankan node
-sudo systemctl stop drosera       # Menghentikan node
-sudo systemctl restart drosera    # Restart node
-sudo systemctl status drosera     # Status node
-journalctl -u drosera -f          # Lihat log node real-time
-```
-
----
 
 ## 🧪 Cek Versi
 
