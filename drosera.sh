@@ -10,6 +10,12 @@ read -p "Masukkan Private Key kamu (untuk trap & operator): " ETH_KEY
 read -p "Masukkan IP VPS kamu (untuk operator): " VPS_IP
 read -p "Masukkan Address kamu (contoh: 0xabc...123): " WHITELIST_ADDR
 
+echo ""
+echo "Trap Setup Mode:"
+echo "1) Deploy trap baru"
+echo "2) Gunakan trap yang sudah ada"
+read -p "Pilih opsi (1 atau 2): " TRAP_MODE
+
 # Update sistem & install dependensi
 echo "🔧 Menyiapkan sistem dan menginstal dependensi..."
 sudo apt-get update && sudo apt-get upgrade -y
@@ -28,7 +34,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update && sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo docker run hello-world
 
-# Install drosera CLI
+# Install drosera CLI, Foundry, Bun
 echo "📥 Menginstal CLI Drosera, Foundry & Bun..."
 curl -L https://app.drosera.io/install | bash
 source ~/.bashrc
@@ -45,12 +51,15 @@ mkdir -p ~/my-drosera-trap
 cd ~/my-drosera-trap
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USERNAME"
-forge init -t drosera-network/trap-foundry-template
-bun install
-forge build
 
-# Update drosera.toml
-cat <<EOL > drosera.toml
+if [ "$TRAP_MODE" == "1" ]; then
+  echo "🚀 Menyiapkan dan mendeply trap baru..."
+  forge init -t drosera-network/trap-foundry-template
+  bun install
+  forge build
+
+  # Buat drosera.toml
+  cat <<EOL > drosera.toml
 ethereum_rpc = "https://ethereum-holesky-rpc.publicnode.com"
 drosera_rpc = "https://seed-node.testnet.drosera.io"
 eth_chain_id = 17000
@@ -70,9 +79,21 @@ private = true
 whitelist = ["$WHITELIST_ADDR"]
 EOL
 
-# Deploy trap
-DROSERA_PRIVATE_KEY=$ETH_KEY drosera apply
-drosera dryrun
+  DROSERA_PRIVATE_KEY=$ETH_KEY drosera apply
+  drosera dryrun
+
+else
+  read -p "Masukkan alamat trap yang sudah dideploy (0x...): " EXISTING_TRAP
+  echo "🛠️ Menggunakan trap yang sudah ada di address: $EXISTING_TRAP"
+
+  cat <<EOT > trap_config.json
+{
+  "name": "mytrap",
+  "address": "$EXISTING_TRAP",
+  "args": {}
+}
+EOT
+fi
 
 # Install operator
 cd ~
@@ -95,7 +116,7 @@ User=$USER
 Restart=always
 RestartSec=15
 LimitNOFILE=65535
-ExecStart=$(which drosera-operator) node --db-file-path \$HOME/.drosera.db --network-p2p-port 31313 --server-port 31314 \
+ExecStart=$(which drosera-operator) node --db-file-path /root/.drosera.db --network-p2p-port 31313 --server-port 31314 \
     --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com \
     --eth-backup-rpc-url https://1rpc.io/holesky \
     --drosera-address 0xea08f7d533C2b9A62F40D5326214f39a8E3A32F8 \
@@ -122,3 +143,4 @@ sudo systemctl start drosera
 
 echo "✅ Node sukses dijalankan! Cek status node kamu dengan :"
 echo "   sudo journalctl -fu drosera"
+
